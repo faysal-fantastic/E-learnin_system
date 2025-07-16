@@ -1,0 +1,37 @@
+<?php
+include 'library/conn.php';
+$lessons = $conn->query("SELECT l.*, c.name AS course FROM lessons l JOIN courses c ON c.id = l.course_id");
+?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lessons</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+
+<body class="container mt-5">
+    <h2>Lessons</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Lesson Title</th>
+                <th>Course</th>
+                <th>Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php while ($row = $lessons->fetch_assoc()): ?>
+                <tr>
+                    <td><?= $row['id'] ?></td>
+                    <td><?= htmlspecialchars($row['title']) ?></td>
+                    <td><?= htmlspecialchars($row['course']) ?></td>
+                    <td><?= substr(strip_tags($row['content']), 0, 50) ?>...</td>
+                </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+</body>
+
+</html>
